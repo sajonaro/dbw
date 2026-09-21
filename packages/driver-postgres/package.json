@@ -1,0 +1,16 @@
+{
+  "name": "@dbw/driver-postgres",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "dbw driver: PostgreSQL, through pg.",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "license": "MIT",
+  "dependencies": {
+    "@dbw/core": "*",
+    "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.0"
+  }
+}

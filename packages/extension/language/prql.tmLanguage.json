@@ -1,0 +1,51 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "PRQL",
+  "scopeName": "source.prql",
+  "patterns": [
+    {
+      "name": "comment.line.number-sign.prql",
+      "match": "#.*$"
+    },
+    {
+      "name": "string.quoted.double.prql",
+      "begin": "f?\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.prql",
+          "match": "\\\\."
+        }
+      ]
+    },
+    {
+      "name": "string.quoted.single.prql",
+      "begin": "f?'",
+      "end": "'"
+    },
+    {
+      "name": "keyword.control.prql",
+      "match": "\\b(from|derive|select|filter|sort|take|join|group|aggregate|window|append|remove|intersect|loop|let|into|prql|func|case|side)\\b"
+    },
+    {
+      "name": "constant.language.prql",
+      "match": "\\b(null|true|false|this|that|left|right|full|inner)\\b"
+    },
+    {
+      "name": "support.function.prql",
+      "match": "\\b(min|max|sum|average|count|count_distinct|stddev|every|any|all|lag|lead|first|last|rank|rank_dense|row_number|round|lower|upper|length|trim)\\b"
+    },
+    {
+      "name": "constant.numeric.prql",
+      "match": "\\b\\d+(\\.\\d+)?\\b"
+    },
+    {
+      "name": "keyword.operator.prql",
+      "match": "\\||->|==|!=|>=|<=|[-+*/%<>=!&?~]|\\bin\\b|\\bas\\b"
+    },
+    {
+      "name": "variable.other.prql",
+      "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+    }
+  ]
+}

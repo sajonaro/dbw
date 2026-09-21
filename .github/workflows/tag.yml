@@ -1,0 +1,35 @@
+name: Tag a release
+
+# Bumps the version in the manifests, commits, tags v<version> and pushes.
+# The push of the tag starts release.yml, which builds the same gate again
+# at the tag and publishes what comes out.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "The version to release (for example 0.2.0), or minor / patch"
+        required: true
+        default: minor
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Bump, commit, tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          version=$(node scripts/version.mjs "${{ github.event.inputs.version }}")
+          git add package.json packages/*/package.json
+          git commit -m "dbw $version"
+          git tag -a "v$version" -m "dbw $version"
+          git push origin HEAD:${{ github.ref_name }}
+          git push origin "v$version"

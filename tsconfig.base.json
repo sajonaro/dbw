@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": [
+      "node"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@dbw/core": [
+        "packages/core/src/index.ts"
+      ],
+      "@dbw/driver-sqlite": [
+        "packages/driver-sqlite/src/index.ts"
+      ],
+      "@dbw/driver-postgres": [
+        "packages/driver-postgres/src/index.ts"
+      ],
+      "@dbw/driver-mssql": [
+        "packages/driver-mssql/src/index.ts"
+      ],
+      "@dbw/language-prql": [
+        "packages/language-prql/src/index.ts"
+      ]
+    }
+  }
+}

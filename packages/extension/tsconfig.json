@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
+    "types": [
+      "node",
+      "vscode"
+    ]
+  },
+  "include": [
+    "src",
+    "media/results.ts",
+    "../core/src",
+    "../driver-sqlite/src",
+    "../driver-postgres/src",
+    "../driver-mssql/src",
+    "../language-prql/src"
+  ],
+  "exclude": [
+    "**/*.test.ts"
+  ]
+}

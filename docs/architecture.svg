@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1136 552" width="1136" height="552" role="img" aria-labelledby="dbw-arch-title dbw-arch-desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="dbw-arch-title">dbw: how the extension is put together</title>
+  <desc id="dbw-arch-desc">Architecture of the dbw VS Code extension: a composition root wires features and shared services inside the extension host; a registry looks up drivers, dialects and query languages, which are plugins implementing the @dbw/core contract, the one focal seam; services connect and query through driver plugins, which reach the databases; PRQL is a query language plugin compiled into the connection's dialect; results render in a webview page.</desc>
+  <defs>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');</style>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#bac2de"/></marker>
+    <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#cba6f7"/></marker>
+    <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#89b4fa"/></marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#1e1e2e"/>
+  <rect x="40" y="68" width="408" height="352" rx="8" fill="#cdd6f4" fill-opacity="0.03" stroke="#cdd6f4" stroke-opacity="0.10" stroke-width="0.8"/>
+  <rect x="52" y="72" width="232" height="12" rx="2" fill="#1e1e2e"/>
+  <text x="168" y="81" fill="#cdd6f4" fill-opacity="0.45" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.14em">DBW EXTENSION · VS CODE EXTENSION HOST</text>
+  <rect x="680" y="164" width="208" height="296" rx="8" fill="#cdd6f4" fill-opacity="0.03" stroke="#cdd6f4" stroke-opacity="0.10" stroke-width="0.8"/>
+  <rect x="692" y="168" width="56" height="12" rx="2" fill="#1e1e2e"/>
+  <text x="720" y="177" fill="#cdd6f4" fill-opacity="0.45" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.14em">PLUGINS</text>
+  <line x1="144" y1="156" x2="144" y2="196" fill="none" stroke="#bac2de" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="264" y1="236" x2="224" y2="236" fill="none" stroke="#bac2de" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="344" y1="316" x2="344" y2="276" fill="none" stroke="#bac2de" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="144" y1="276" x2="144" y2="316" fill="none" stroke="#bac2de" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <path d="M568,356 V364 Q568,372 560,372 H424" fill="none" stroke="#cba6f7" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+  <line x1="424" y1="220" x2="704" y2="220" fill="none" stroke="#89b4fa" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+  <path d="M744,276 V288 Q744,296 736,296 H648" fill="none" stroke="#bac2de" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <path d="M744,356 V344 Q744,336 736,336 H648" fill="none" stroke="#bac2de" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="864" y1="236" x2="944" y2="236" fill="none" stroke="#bac2de" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <rect x="152" y="168" width="56" height="12" rx="2" fill="#1e1e2e"/>
+  <text x="180" y="177" fill="#a6adc8" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">COMPOSES</text>
+  <rect x="232" y="216" width="24" height="12" rx="2" fill="#1e1e2e"/>
+  <text x="244" y="225" fill="#a6adc8" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">DBW</text>
+  <rect x="352" y="290" width="44" height="12" rx="2" fill="#1e1e2e"/>
+  <text x="374" y="299" fill="#a6adc8" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">LOOKUP</text>
+  <rect x="152" y="290" width="56" height="12" rx="2" fill="#1e1e2e"/>
+  <text x="180" y="299" fill="#a6adc8" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">PROTOCOL</text>
+  <rect x="440" y="380" width="56" height="12" rx="2" fill="#1e1e2e"/>
+  <text x="468" y="389" fill="#cba6f7" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">REGISTERS</text>
+  <rect x="520" y="200" width="88" height="12" rx="2" fill="#1e1e2e"/>
+  <text x="564" y="209" fill="#89b4fa" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">CONNECT/QUERY</text>
+  <rect x="656" y="304" width="64" height="12" rx="2" fill="#1e1e2e"/>
+  <text x="688" y="313" fill="#a6adc8" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">IMPLEMENTS</text>
+  <rect x="876" y="216" width="56" height="12" rx="2" fill="#1e1e2e"/>
+  <text x="904" y="225" fill="#a6adc8" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">TCP / FILE</text>
+  <rect x="64" y="100" width="360" height="56" rx="6" fill="#1e1e2e"/>
+  <rect x="64" y="100" width="360" height="56" rx="6" fill="#1e1e2e" stroke="#cdd6f4" stroke-opacity="0.45" stroke-width="1"/>
+  <rect x="72" y="106" width="28" height="12" rx="2" fill="none" stroke="#a6adc8" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="86" y="115" fill="#a6adc8" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">ROOT</text>
+  <text x="244" y="130" fill="#cdd6f4" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">extension.ts, the composition root</text>
+  <text x="244" y="144" fill="#a6adc8" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">builds services · registers built-in plugins · calls each feature</text>
+  <rect x="64" y="196" width="160" height="80" rx="6" fill="#1e1e2e"/>
+  <rect x="64" y="196" width="160" height="80" rx="6" fill="#1e1e2e" stroke="#cdd6f4" stroke-opacity="0.45" stroke-width="1"/>
+  <rect x="72" y="202" width="48" height="12" rx="2" fill="none" stroke="#a6adc8" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="96" y="211" fill="#a6adc8" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">FEATURES</text>
+  <text x="144" y="234" fill="#cdd6f4" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">Features</text>
+  <text x="144" y="248" fill="#a6adc8" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">connections · explorer · query</text>
+  <text x="144" y="260" fill="#a6adc8" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">intellisense · history</text>
+  <rect x="264" y="196" width="160" height="80" rx="6" fill="#1e1e2e"/>
+  <rect x="264" y="196" width="160" height="80" rx="6" fill="#1e1e2e" stroke="#cdd6f4" stroke-opacity="0.45" stroke-width="1"/>
+  <rect x="272" y="202" width="23" height="12" rx="2" fill="none" stroke="#a6adc8" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="283" y="211" fill="#a6adc8" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">DBW</text>
+  <text x="344" y="234" fill="#cdd6f4" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">Services</text>
+  <text x="344" y="248" fill="#a6adc8" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">Sessions · Profiles · Binding</text>
+  <text x="344" y="260" fill="#a6adc8" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">History · Results</text>
+  <rect x="264" y="316" width="160" height="72" rx="6" fill="#1e1e2e"/>
+  <rect x="264" y="316" width="160" height="72" rx="6" fill="#1e1e2e" stroke="#cdd6f4" stroke-opacity="0.45" stroke-width="1"/>
+  <rect x="272" y="322" width="33" height="12" rx="2" fill="none" stroke="#a6adc8" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="288" y="331" fill="#a6adc8" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">STORE</text>
+  <text x="344" y="354" fill="#cdd6f4" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">Registry</text>
+  <text x="344" y="368" fill="#a6adc8" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">drivers · dialects · languages</text>
+  <rect x="64" y="316" width="160" height="72" rx="6" fill="#1e1e2e"/>
+  <rect x="64" y="316" width="160" height="72" rx="6" fill="#cdd6f4" fill-opacity="0.02" stroke="#cdd6f4" stroke-opacity="0.20" stroke-width="1" stroke-dasharray="4,3"/>
+  <rect x="72" y="322" width="43" height="12" rx="2" fill="none" stroke="#a6adc8" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="93" y="331" fill="#a6adc8" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">WEBVIEW</text>
+  <text x="144" y="354" fill="#cdd6f4" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">Results page</text>
+  <text x="144" y="368" fill="#a6adc8" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">AG Grid · views</text>
+  <rect x="488" y="276" width="160" height="80" rx="6" fill="#1e1e2e"/>
+  <rect x="488" y="276" width="160" height="80" rx="6" fill="#cba6f7" fill-opacity="0.12" stroke="#cba6f7" stroke-width="1"/>
+  <rect x="496" y="282" width="28" height="12" rx="2" fill="none" stroke="#a6adc8" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="510" y="291" fill="#a6adc8" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">CORE</text>
+  <text x="568" y="314" fill="#cdd6f4" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">@dbw/core</text>
+  <text x="568" y="328" fill="#a6adc8" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">Dialect · DriverPlugin</text>
+  <text x="568" y="340" fill="#a6adc8" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">QueryLanguage · Connection</text>
+  <rect x="704" y="196" width="160" height="80" rx="6" fill="#1e1e2e"/>
+  <rect x="704" y="196" width="160" height="80" rx="6" fill="#1e1e2e" stroke="#cdd6f4" stroke-opacity="0.45" stroke-width="1"/>
+  <rect x="712" y="202" width="38" height="12" rx="2" fill="none" stroke="#a6adc8" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="731" y="211" fill="#a6adc8" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">DRIVER</text>
+  <text x="784" y="234" fill="#cdd6f4" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">Driver plugins</text>
+  <text x="784" y="248" fill="#a6adc8" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">sqlite · postgres · mssql</text>
+  <text x="784" y="260" fill="#a6adc8" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">settings · other extensions</text>
+  <rect x="704" y="356" width="160" height="80" rx="6" fill="#1e1e2e"/>
+  <rect x="704" y="356" width="160" height="80" rx="6" fill="#1e1e2e" stroke="#cdd6f4" stroke-opacity="0.45" stroke-width="1"/>
+  <rect x="712" y="362" width="43" height="12" rx="2" fill="none" stroke="#a6adc8" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="733" y="371" fill="#a6adc8" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">DIALECT</text>
+  <text x="784" y="394" fill="#cdd6f4" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">Dialect &amp; language plugins</text>
+  <text x="784" y="408" fill="#a6adc8" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">quote · split · format</text>
+  <text x="784" y="420" fill="#a6adc8" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">PRQL → the dialect's SQL</text>
+  <rect x="944" y="196" width="152" height="80" rx="6" fill="#1e1e2e"/>
+  <rect x="944" y="196" width="152" height="80" rx="6" fill="#cdd6f4" fill-opacity="0.03" stroke="#cdd6f4" stroke-opacity="0.30" stroke-width="1"/>
+  <rect x="952" y="202" width="23" height="12" rx="2" fill="none" stroke="#a6adc8" stroke-opacity="0.5" stroke-width="0.8"/>
+  <text x="963" y="211" fill="#a6adc8" font-size="7" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.08em">EXT</text>
+  <text x="1020" y="238" fill="#cdd6f4" font-size="12" font-weight="600" font-family="'Geist', system-ui, sans-serif" text-anchor="middle">Databases</text>
+  <text x="1020" y="252" fill="#a6adc8" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">pg · tedious · node:sqlite</text>
+  <line x1="40" y1="492" x2="1096" y2="492" stroke="#cdd6f4" stroke-opacity="0.16" stroke-width="0.8"/>
+  <text x="40" y="512" fill="#a6adc8" font-size="8" font-family="'Geist Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGEND</text>
+  <rect x="112" y="504" width="12" height="10" rx="2" fill="#cba6f7" fill-opacity="0.12" stroke="#cba6f7" stroke-width="1"/>
+  <text x="132" y="512" fill="#bac2de" font-size="8" font-family="'Geist Mono', ui-monospace, monospace">the contract every plugin implements</text>
+  <rect x="352" y="504" width="12" height="10" rx="2" fill="#1e1e2e" stroke="#cdd6f4" stroke-opacity="0.45" stroke-width="1"/>
+  <text x="372" y="512" fill="#bac2de" font-size="8" font-family="'Geist Mono', ui-monospace, monospace">component</text>
+  <rect x="464" y="504" width="12" height="10" rx="2" fill="#cdd6f4" fill-opacity="0.02" stroke="#cdd6f4" stroke-opacity="0.20" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="484" y="512" fill="#bac2de" font-size="8" font-family="'Geist Mono', ui-monospace, monospace">webview, on the other side of a message</text>
+  <rect x="736" y="504" width="12" height="10" rx="2" fill="#cdd6f4" fill-opacity="0.03" stroke="#cdd6f4" stroke-opacity="0.30" stroke-width="1"/>
+  <text x="756" y="512" fill="#bac2de" font-size="8" font-family="'Geist Mono', ui-monospace, monospace">outside the extension</text>
+  <line x1="912" y1="509" x2="944" y2="509" stroke="#89b4fa" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+  <text x="952" y="512" fill="#bac2de" font-size="8" font-family="'Geist Mono', ui-monospace, monospace">calls across the seam</text>
+</svg>

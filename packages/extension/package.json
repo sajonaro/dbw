@@ -1,0 +1,460 @@
+{
+  "name": "dbw",
+  "displayName": "dbw: Database Workbench",
+  "description": "Query any database from VS Code: object explorer, IntelliSense from your schema, results grid, PRQL on any connection. One plugin per dialect, driver and query language.",
+  "version": "0.1.0",
+  "publisher": "sajonaro",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sajonaro/dbw"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "sql",
+    "database",
+    "postgres",
+    "sqlite",
+    "sql server",
+    "query",
+    "prql"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:sql",
+    "onLanguage:prql"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "dbw",
+          "title": "dbw",
+          "icon": "media/dbw.svg"
+        }
+      ]
+    },
+    "views": {
+      "dbw": [
+        {
+          "id": "dbw.explorer",
+          "name": "Connections",
+          "icon": "media/dbw.svg",
+          "contextualTitle": "dbw"
+        },
+        {
+          "id": "dbw.history",
+          "name": "Query History",
+          "icon": "media/dbw.svg",
+          "contextualTitle": "dbw"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "dbw.explorer",
+        "contents": "No connections yet.\n[Add Connection](command:dbw.addConnection)\nA connection is a driver plus a form the driver describes."
+      }
+    ],
+    "commands": [
+      {
+        "command": "dbw.addConnection",
+        "title": "Add Connection",
+        "category": "dbw",
+        "icon": "$(add)"
+      },
+      {
+        "command": "dbw.editConnection",
+        "title": "Edit Connection",
+        "category": "dbw",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "dbw.removeConnection",
+        "title": "Remove Connection",
+        "category": "dbw",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "dbw.connect",
+        "title": "Connect",
+        "category": "dbw",
+        "icon": "$(plug)"
+      },
+      {
+        "command": "dbw.disconnect",
+        "title": "Disconnect",
+        "category": "dbw",
+        "icon": "$(debug-disconnect)"
+      },
+      {
+        "command": "dbw.refresh",
+        "title": "Refresh",
+        "category": "dbw",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "dbw.newQuery",
+        "title": "New Query",
+        "category": "dbw",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "dbw.selectTop",
+        "title": "Select Top Rows",
+        "category": "dbw",
+        "icon": "$(table)"
+      },
+      {
+        "command": "dbw.copyName",
+        "title": "Copy Name",
+        "category": "dbw"
+      },
+      {
+        "command": "dbw.insertName",
+        "title": "Insert Name into Editor",
+        "category": "dbw"
+      },
+      {
+        "command": "dbw.runStatement",
+        "title": "Run Statement (or Selection)",
+        "category": "dbw",
+        "icon": "$(play)"
+      },
+      {
+        "command": "dbw.runAll",
+        "title": "Run All (or Selection)",
+        "category": "dbw",
+        "icon": "$(run-all)"
+      },
+      {
+        "command": "dbw.chooseConnection",
+        "title": "Use Connection for This Editor",
+        "category": "dbw",
+        "icon": "$(database)"
+      },
+      {
+        "command": "dbw.refreshSchemaCache",
+        "title": "Refresh IntelliSense Schema",
+        "category": "dbw"
+      },
+      {
+        "command": "dbw.showHistory",
+        "title": "Show Query History",
+        "category": "dbw",
+        "icon": "$(history)"
+      },
+      {
+        "command": "dbw.clearHistory",
+        "title": "Clear Query History",
+        "category": "dbw",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "dbw.rerunHistory",
+        "title": "Open in New Query",
+        "category": "dbw"
+      },
+      {
+        "command": "dbw.showResults",
+        "title": "Show Results",
+        "category": "dbw",
+        "icon": "$(output)"
+      },
+      {
+        "command": "dbw.showCompiledSql",
+        "title": "Show Compiled SQL",
+        "category": "dbw",
+        "icon": "$(code)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "dbw.addConnection",
+          "when": "view == dbw.explorer",
+          "group": "navigation@1"
+        },
+        {
+          "command": "dbw.refresh",
+          "when": "view == dbw.explorer",
+          "group": "navigation@2"
+        },
+        {
+          "command": "dbw.clearHistory",
+          "when": "view == dbw.history",
+          "group": "navigation@1"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "dbw.newQuery",
+          "when": "view == dbw.explorer && viewItem =~ /^connection/",
+          "group": "inline@1"
+        },
+        {
+          "command": "dbw.connect",
+          "when": "view == dbw.explorer && viewItem == connection",
+          "group": "inline@2"
+        },
+        {
+          "command": "dbw.disconnect",
+          "when": "view == dbw.explorer && viewItem == connection-open",
+          "group": "inline@2"
+        },
+        {
+          "command": "dbw.newQuery",
+          "when": "view == dbw.explorer && viewItem =~ /^connection/",
+          "group": "1_query@1"
+        },
+        {
+          "command": "dbw.connect",
+          "when": "view == dbw.explorer && viewItem == connection",
+          "group": "2_state@1"
+        },
+        {
+          "command": "dbw.disconnect",
+          "when": "view == dbw.explorer && viewItem == connection-open",
+          "group": "2_state@1"
+        },
+        {
+          "command": "dbw.refresh",
+          "when": "view == dbw.explorer && viewItem =~ /^connection/",
+          "group": "2_state@2"
+        },
+        {
+          "command": "dbw.editConnection",
+          "when": "view == dbw.explorer && viewItem =~ /^connection/",
+          "group": "3_manage@1"
+        },
+        {
+          "command": "dbw.removeConnection",
+          "when": "view == dbw.explorer && viewItem =~ /^connection/",
+          "group": "3_manage@2"
+        },
+        {
+          "command": "dbw.selectTop",
+          "when": "view == dbw.explorer && viewItem =~ /^(table|view)$/",
+          "group": "inline@1"
+        },
+        {
+          "command": "dbw.selectTop",
+          "when": "view == dbw.explorer && viewItem =~ /^(table|view)$/",
+          "group": "1_query@1"
+        },
+        {
+          "command": "dbw.copyName",
+          "when": "view == dbw.explorer && viewItem =~ /^(table|view|column|schema|routine)$/",
+          "group": "4_clipboard@1"
+        },
+        {
+          "command": "dbw.insertName",
+          "when": "view == dbw.explorer && viewItem =~ /^(table|view|column|schema|routine)$/",
+          "group": "4_clipboard@2"
+        },
+        {
+          "command": "dbw.rerunHistory",
+          "when": "view == dbw.history",
+          "group": "inline@1"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "dbw.runStatement",
+          "when": "editorLangId =~ /^(sql|prql)$/",
+          "group": "navigation@1"
+        },
+        {
+          "command": "dbw.runAll",
+          "when": "editorLangId =~ /^(sql|prql)$/",
+          "group": "navigation@2"
+        },
+        {
+          "command": "dbw.chooseConnection",
+          "when": "editorLangId =~ /^(sql|prql)$/",
+          "group": "navigation@3"
+        },
+        {
+          "command": "dbw.showCompiledSql",
+          "when": "editorLangId == prql",
+          "group": "navigation@4"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "dbw.runStatement",
+          "when": "editorLangId =~ /^(sql|prql)$/",
+          "group": "dbw@1"
+        },
+        {
+          "command": "dbw.runAll",
+          "when": "editorLangId =~ /^(sql|prql)$/",
+          "group": "dbw@2"
+        },
+        {
+          "command": "dbw.chooseConnection",
+          "when": "editorLangId =~ /^(sql|prql)$/",
+          "group": "dbw@3"
+        },
+        {
+          "command": "dbw.showCompiledSql",
+          "when": "editorLangId == prql",
+          "group": "dbw@4"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "dbw.editConnection",
+          "when": "false"
+        },
+        {
+          "command": "dbw.removeConnection",
+          "when": "false"
+        },
+        {
+          "command": "dbw.connect",
+          "when": "false"
+        },
+        {
+          "command": "dbw.disconnect",
+          "when": "false"
+        },
+        {
+          "command": "dbw.selectTop",
+          "when": "false"
+        },
+        {
+          "command": "dbw.copyName",
+          "when": "false"
+        },
+        {
+          "command": "dbw.insertName",
+          "when": "false"
+        },
+        {
+          "command": "dbw.rerunHistory",
+          "when": "false"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "dbw.runStatement",
+        "key": "ctrl+enter",
+        "mac": "cmd+enter",
+        "when": "editorTextFocus && editorLangId =~ /^(sql|prql)$/"
+      },
+      {
+        "command": "dbw.runAll",
+        "key": "f5",
+        "when": "editorTextFocus && editorLangId =~ /^(sql|prql)$/"
+      },
+      {
+        "command": "dbw.chooseConnection",
+        "key": "ctrl+alt+c",
+        "mac": "cmd+alt+c",
+        "when": "editorTextFocus && editorLangId =~ /^(sql|prql)$/"
+      }
+    ],
+    "configuration": {
+      "title": "dbw",
+      "properties": {
+        "dbw.connections": {
+          "type": "array",
+          "default": [],
+          "scope": "application",
+          "description": "Saved connections. Passwords are kept in VS Code's secret storage, not here.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "driver": {
+                "type": "string"
+              },
+              "config": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "dbw.driverModules": {
+          "type": "array",
+          "default": [],
+          "scope": "application",
+          "items": {
+            "type": "string"
+          },
+          "description": "Extra driver plugins to load: absolute paths to modules whose default export is a dbw DriverPlugin."
+        },
+        "dbw.selectTopLimit": {
+          "type": "integer",
+          "default": 100,
+          "description": "Rows that 'Select Top Rows' asks for."
+        },
+        "dbw.maxRowsShown": {
+          "type": "integer",
+          "default": 10000,
+          "description": "Rows kept per result set in the grid."
+        },
+        "dbw.history.limit": {
+          "type": "integer",
+          "default": 200,
+          "description": "How many queries to remember."
+        }
+      }
+    },
+    "languages": [
+      {
+        "id": "prql",
+        "aliases": [
+          "PRQL",
+          "prql"
+        ],
+        "extensions": [
+          ".prql"
+        ],
+        "configuration": "./language/prql-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "prql",
+        "scopeName": "source.prql",
+        "path": "./language/prql.tmLanguage.json"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "package": "node esbuild.mjs --production && vsce package --no-dependencies",
+    "vscode:prepublish": "node esbuild.mjs --production"
+  },
+  "dependencies": {
+    "@dbw/core": "*",
+    "@dbw/driver-mssql": "*",
+    "@dbw/driver-postgres": "*",
+    "@dbw/driver-sqlite": "*",
+    "ag-grid-community": "^34.0.0",
+    "dbgate-query-splitter": "^4.12.0",
+    "prql-js": "^0.12.1",
+    "sql-formatter": "^15.6.0",
+    "@dbw/language-prql": "*"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.6.0",
+    "esbuild": "^0.25.0"
+  }
+}
