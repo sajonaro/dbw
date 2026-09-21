@@ -15,7 +15,7 @@ build:
 
 ## Install the packaged .vsix into the running VS Code
 install: $(VSIX)
-	code --install $(VSIX) --force
+	code --install-extension $(VSIX) --force
 
 ## Copy the .vsix to the Windows Desktop for manual Marketplace upload
 stage: $(VSIX)
