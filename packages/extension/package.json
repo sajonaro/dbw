@@ -1,6 +1,6 @@
 {
   "name": "dbw-workbench",
-  "displayName": "dbw: Database Workbench",
+  "displayName": "dbw Workbench",
   "description": "Query any database from VS Code: object explorer, IntelliSense from your schema, results grid, PRQL on any connection. One plugin per dialect, driver and query language.",
   "version": "0.2.1",
   "publisher": "sajonaro",
