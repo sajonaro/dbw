@@ -28,6 +28,7 @@ const targets: Record<string, string> = {
   postgres: 'sql.postgres',
   mssql: 'sql.mssql',
   mysql: 'sql.mysql',
+  mariadb: 'sql.mysql',
   duckdb: 'sql.duckdb',
   bigquery: 'sql.bigquery',
   clickhouse: 'sql.clickhouse',
