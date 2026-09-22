@@ -1,0 +1,29 @@
+# Northwind on PostgreSQL, for trying dbw against real-looking data.
+#
+#   docker compose up -d       # first start loads init/*.sql
+#   docker compose down -v     # stop and drop the data
+#
+# Connect with: host localhost, port 5432, database northwind,
+# user northwind, password northwind.
+
+services:
+  northwind:
+    image: postgres:17-alpine
+    container_name: northwind
+    environment:
+      POSTGRES_DB: northwind
+      POSTGRES_USER: northwind
+      POSTGRES_PASSWORD: northwind
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d:ro
+      - northwind-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U northwind -d northwind"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  northwind-data:
