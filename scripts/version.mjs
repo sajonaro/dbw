@@ -5,11 +5,10 @@
 //   node scripts/version.mjs minor      the next minor (patch stays 0), or `patch`
 //
 // Prints the resulting version, which tag.yml reads.
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 
-const files = ['package.json', 'packages/extension/package.json', 'packages/core/package.json',
-  'packages/driver-sqlite/package.json', 'packages/driver-postgres/package.json', 'packages/driver-mssql/package.json',
-  'packages/language-prql/package.json'];
+// Every workspace package, so a new package needs no line here.
+const files = ['package.json', ...readdirSync('packages').map((d) => `packages/${d}/package.json`).filter(existsSync)];
 const read = (f) => JSON.parse(readFileSync(f, 'utf8'));
 const current = read('packages/extension/package.json').version;
 const arg = process.argv[2];

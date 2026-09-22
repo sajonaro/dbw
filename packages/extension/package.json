@@ -11,7 +11,7 @@
     "url": "https://github.com/sajonaro/dbw"
   },
   "engines": {
-    "vscode": "^1.90.0"
+    "vscode": "^1.101.0"
   },
   "categories": [
     "Programming Languages",
@@ -172,7 +172,13 @@
         "command": "dbw.showCompiledSql",
         "title": "Show Compiled SQL",
         "category": "dbw",
-        "icon": "$(code)"
+        "icon": "$(arrow-swap)"
+      },
+      {
+        "command": "dbw.showPrqlSource",
+        "title": "Show PRQL Source",
+        "category": "dbw",
+        "icon": "$(arrow-swap)"
       }
     ],
     "menus": {
@@ -284,6 +290,11 @@
         {
           "command": "dbw.showCompiledSql",
           "when": "editorLangId == prql",
+          "group": "navigation@4"
+        },
+        {
+          "command": "dbw.showPrqlSource",
+          "when": "resourceScheme == untitled && resourcePath =~ /\\.prql\\.sql$/",
           "group": "navigation@4"
         }
       ],
@@ -444,6 +455,7 @@
   },
   "dependencies": {
     "@dbw/core": "*",
+    "@dbw/driver-mariadb": "*",
     "@dbw/driver-mssql": "*",
     "@dbw/driver-postgres": "*",
     "@dbw/driver-sqlite": "*",

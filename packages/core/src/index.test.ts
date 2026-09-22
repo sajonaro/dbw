@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { defineDialect, genericDialect } from './index.js';
+import { defineDialect, genericDialect, groupColumns } from './index.js';
 
 describe('defineDialect', () => {
   it('splits by flavour, with positions', () => {
@@ -28,5 +28,21 @@ describe('defineDialect', () => {
   });
   it('formats with the dialect', () => {
     expect(genericDialect.format('select a,b from t where x=1')).toBe('SELECT\n  a,\n  b\nFROM\n  t\nWHERE\n  x = 1');
+  });
+});
+
+describe('groupColumns', () => {
+  it('folds one row per column into one entry per table, keeping column order', () => {
+    const rows = [
+      { schema: 'public', name: 'people', kind: 'table' as const, column: { name: 'id', type: 'int' } },
+      { schema: 'public', name: 'people', kind: 'table' as const, column: { name: 'name', type: 'text' } },
+      { schema: 'public', name: 'adults', kind: 'view' as const, column: { name: 'id' } },
+      { name: 'loose', kind: 'table' as const, column: { name: 'x' } },
+    ];
+    expect(groupColumns(rows)).toEqual([
+      { schema: 'public', name: 'people', kind: 'table', columns: [{ name: 'id', type: 'int' }, { name: 'name', type: 'text' }] },
+      { schema: 'public', name: 'adults', kind: 'view', columns: [{ name: 'id' }] },
+      { schema: undefined, name: 'loose', kind: 'table', columns: [{ name: 'x' }] },
+    ]);
   });
 });

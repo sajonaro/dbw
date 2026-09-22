@@ -14,7 +14,8 @@
     "typecheck": "tsc -p packages/extension --noEmit && tsc -p packages/core --noEmit",
     "test": "vitest run",
     "version": "node scripts/version.mjs",
-    "vsix": "docker build --target dist --output out ."
+    "vsix": "docker build --target dist --output out .",
+    "check": "node scripts/check.cjs"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

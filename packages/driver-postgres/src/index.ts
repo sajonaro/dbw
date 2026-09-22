@@ -1,5 +1,5 @@
 import pg from 'pg';
-import { defineDialect, definePlugin } from '@dbw/core';
+import { defineDialect, definePlugin, groupColumns } from '@dbw/core';
 import type { Connection, QueryResult, SchemaNode, TableInfo } from '@dbw/core';
 
 export const dialect = defineDialect({
@@ -84,17 +84,7 @@ function wrap(client: pg.Client): Connection {
          join information_schema.columns c on c.table_schema = t.table_schema and c.table_name = t.table_name
          where t.table_schema not in ('pg_catalog', 'information_schema')
          order by t.table_schema, t.table_name, c.ordinal_position`);
-      const byTable = new Map<string, TableInfo>();
-      for (const c of cols) {
-        const key = `${c.table_schema}.${c.table_name}`;
-        let t = byTable.get(key);
-        if (!t) {
-          t = { schema: c.table_schema, name: c.table_name, kind: c.table_type === 'VIEW' ? 'view' : 'table', columns: [] };
-          byTable.set(key, t);
-        }
-        t.columns.push({ name: c.column_name, type: c.data_type });
-      }
-      return [...byTable.values()];
+      return groupColumns(cols.map((c) => ({ schema: c.table_schema, name: c.table_name, kind: c.table_type === 'VIEW' ? 'view' : 'table', column: { name: c.column_name, type: c.data_type } })));
     },
 
     async close() {

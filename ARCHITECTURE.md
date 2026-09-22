@@ -47,7 +47,7 @@ meet through the services and through VS Code commands.
 
 ```
 packages/core            the two contracts, defineDialect, genericDialect
-packages/driver-*        one plugin each: sqlite, postgres, mssql
+packages/driver-*        one plugin each: sqlite, postgres, mssql, mariadb
 packages/language-prql   PRQL, compiled to the connection's dialect by prqlc
 packages/extension/src
   extension.ts           composition root; the only file that knows every part
@@ -96,14 +96,16 @@ statement is half typed.
 ## Reused
 
 `dbgate-query-splitter` (statements, batches, `GO`, `$$`), `sql-formatter`
-(formatting per dialect), `ag-grid-community` (the grid), `pg`, `mssql`,
+(formatting per dialect), `ag-grid-community` (the grid), `pg`, `mssql`, `mariadb`,
 and `node:sqlite`. Everything is bundled by esbuild into two files, so the
 packaged extension ships no `node_modules`.
 
 ## Adding things
 
-- A database: a new `packages/driver-*`, one line in `extension.ts`, or
-  nothing at all if it is loaded from settings or another extension.
+- A database: a new `packages/driver-*`, its import and one entry in the
+  list in `extension.ts`, a dependency line in the extension manifest and a
+  `COPY` line in the Dockerfile; or nothing at all if it is loaded from
+  settings or another extension. `CONTRIBUTING.md` walks through it.
 - A dialect for an existing generic driver: `registerDialect`.
 - A query language: a `QueryLanguage` and `registerLanguage`, plus a
   `contributes.languages` entry if VS Code does not know the language yet.
@@ -111,6 +113,17 @@ packaged extension ships no `node_modules`.
   line in the list. It gets the services; it does not touch other features.
 - A results view (say, a chart): a `View` in `media/results.ts`; the
   runner and the protocol do not change unless the view needs new data.
+
+## Verified how
+
+`npm test` covers what needs no server: the analyzer, statements,
+serialization, `defineDialect`, `groupColumns`, the SQLite driver, PRQL, and
+the pure parts of the MariaDB driver. A driver that needs a server tests
+itself only when its environment variable names one (`DBW_MARIADB=
+host:port:user:password`), and skips otherwise, so the Docker gate stays
+hermetic. `npm run check` activates the built bundle in plain Node with a
+stubbed `vscode`, proving it loads, registers every command, exposes the
+API and deactivates cleanly; it is part of the gate.
 
 ## Shape
 

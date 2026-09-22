@@ -1,5 +1,5 @@
 import sql from 'mssql';
-import { defineDialect, definePlugin } from '@dbw/core';
+import { defineDialect, definePlugin, groupColumns } from '@dbw/core';
 import type { Connection, QueryResult, SchemaNode, TableInfo } from '@dbw/core';
 
 export const dialect = defineDialect({
@@ -81,17 +81,7 @@ function wrap(pool: sql.ConnectionPool): Connection {
         `select s.name as schema_name, o.name, o.type, c.name as [column], type_name(c.user_type_id) as column_type
          from sys.objects o join sys.schemas s on s.schema_id = o.schema_id join sys.columns c on c.object_id = o.object_id
          where o.type in ('U', 'V') order by s.name, o.name, c.column_id`);
-      const byTable = new Map<string, TableInfo>();
-      for (const c of cols) {
-        const key = `${c.schema_name}.${c.name}`;
-        let t = byTable.get(key);
-        if (!t) {
-          t = { schema: c.schema_name, name: c.name, kind: c.type.trim() === 'V' ? 'view' : 'table', columns: [] };
-          byTable.set(key, t);
-        }
-        t.columns.push({ name: c.column, type: c.column_type });
-      }
-      return [...byTable.values()];
+      return groupColumns(cols.map((c) => ({ schema: c.schema_name, name: c.name, kind: c.type.trim() === 'V' ? 'view' : 'table', column: { name: c.column, type: c.column_type } })));
     },
 
     async close() {

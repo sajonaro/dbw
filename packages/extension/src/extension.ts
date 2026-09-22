@@ -5,6 +5,7 @@ import type { DbwApi, DriverPlugin } from '@dbw/core';
 import sqlite from '@dbw/driver-sqlite';
 import postgres from '@dbw/driver-postgres';
 import mssql from '@dbw/driver-mssql';
+import mariadb from '@dbw/driver-mariadb';
 import { createPrql, type PrqlModule } from '@dbw/language-prql';
 import { Registry } from './registry';
 import { ProfileStore } from './connections/store';
@@ -24,7 +25,7 @@ import { intellisenseFeature } from './features/intellisense';
  *
  * Open for extension, closed for modification, at three seams:
  *
- *  - Databases: a `DriverPlugin`, registered here as the built-in three
+ *  - Databases: a `DriverPlugin`, registered here as the built-in four
  *    are, from `dbw.driverModules` in settings, or by another extension
  *    through the exported API.  Nothing else in dbw names a database.
  *  - Dialects: a `Dialect`, the same three ways.  Nothing else in dbw
@@ -48,7 +49,7 @@ export function activate(context: vscode.ExtensionContext): DbwApi {
   const dbw: Dbw = { extensionUri: context.extensionUri, registry, profiles, sessions, binding, history, results };
   context.subscriptions.push(profiles, binding, results, { dispose: () => void sessions.closeAll() });
 
-  for (const plugin of [sqlite, postgres, mssql]) context.subscriptions.push(registry.registerDriver(plugin));
+  for (const plugin of [sqlite, postgres, mssql, mariadb]) context.subscriptions.push(registry.registerDriver(plugin));
   const require = createRequire(__filename);
   context.subscriptions.push(registry.registerLanguage(createPrql(() => require(join(__dirname, 'prql', 'prql_js.js')) as PrqlModule)));
   context.subscriptions.push(loadDriverModules(registry));

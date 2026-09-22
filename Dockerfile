@@ -24,6 +24,7 @@ COPY packages/core/package.json packages/core/
 COPY packages/driver-sqlite/package.json packages/driver-sqlite/
 COPY packages/driver-postgres/package.json packages/driver-postgres/
 COPY packages/driver-mssql/package.json packages/driver-mssql/
+COPY packages/driver-mariadb/package.json packages/driver-mariadb/
 COPY packages/language-prql/package.json packages/language-prql/
 COPY packages/extension/package.json packages/extension/
 RUN npm ci --ignore-scripts --no-audit --no-fund
@@ -38,7 +39,7 @@ RUN built=$(node -p "require('./packages/extension/package.json').version") \
 
 # --- the gate ----------------------------------------------------------------
 FROM build AS test
-RUN npm test && echo "${DBW_VERSION:-dev}" > /passed
+RUN npm test && npm run check && echo "${DBW_VERSION:-dev}" > /passed
 
 # --- the package -------------------------------------------------------------
 # The first line copied comes from `test`, which puts the suites on the path

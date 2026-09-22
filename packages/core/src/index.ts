@@ -213,6 +213,18 @@ export interface TableInfo extends TableRef {
   columns: ColumnInfo[];
 }
 
+/** One row per column, as a catalog query returns them, folded into one entry per table. */
+export function groupColumns(rows: Iterable<{ schema?: string; name: string; kind: 'table' | 'view'; column: ColumnInfo }>): TableInfo[] {
+  const byTable = new Map<string, TableInfo>();
+  for (const r of rows) {
+    const key = `${r.schema ?? ''}.${r.name}`;
+    let t = byTable.get(key);
+    if (!t) byTable.set(key, (t = { schema: r.schema, name: r.name, kind: r.kind, columns: [] }));
+    t.columns.push(r.column);
+  }
+  return [...byTable.values()];
+}
+
 /** One result set, or the outcome of a statement that returned none. */
 export interface QueryResult {
   columns: ColumnInfo[];
