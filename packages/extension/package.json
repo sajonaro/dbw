@@ -275,27 +275,27 @@
         {
           "command": "dbw.runStatement",
           "when": "editorLangId =~ /^(sql|prql)$/",
-          "group": "navigation@1"
+          "group": "navigation@-4"
         },
         {
           "command": "dbw.runAll",
           "when": "editorLangId =~ /^(sql|prql)$/",
-          "group": "navigation@2"
+          "group": "navigation@-3"
         },
         {
           "command": "dbw.chooseConnection",
           "when": "editorLangId =~ /^(sql|prql)$/",
-          "group": "navigation@3"
+          "group": "navigation@-2"
         },
         {
           "command": "dbw.showCompiledSql",
           "when": "editorLangId == prql",
-          "group": "navigation@4"
+          "group": "navigation@-1"
         },
         {
           "command": "dbw.showPrqlSource",
           "when": "resourceScheme == untitled && resourcePath =~ /\\.prql\\.sql$/",
-          "group": "navigation@4"
+          "group": "navigation@-1"
         }
       ],
       "editor/context": [
