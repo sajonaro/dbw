@@ -1,124 +1,120 @@
-# dbw — a database workbench for VS Code
+# dbw
 
-Query any database from VS Code: an object explorer, an editor that knows
-your schema, a results grid beside it. One plugin per dialect and one per
-driver, so a new database is a new package, not a change to dbw.
+Query your databases without leaving VS Code. Browse tables in the sidebar,
+write SQL in a normal editor with completion from your real schema, and see
+the results in a grid beside it.
 
-Built in: SQLite (no native build, it uses Node's own), PostgreSQL, SQL Server;
-and [PRQL](https://prql-lang.org/) as a query language on any of them.
+Works with **SQLite**, **PostgreSQL** and **SQL Server** out of the box, and
+lets you write [PRQL](https://prql-lang.org/) against any of them.
+
+## What you get
+
+- **Object explorer.** Every connection in the sidebar: schemas, tables,
+  views, columns with their types, functions and stored procedures.
+- **Query editors that know where they run.** Any `.sql` or `.prql` file is
+  bound to a connection. The status bar shows which one; click it to switch.
+- **Results grid beside the editor.** One tab per result set, a Messages tab
+  for row counts, timings and errors. Sort and filter columns, copy cells or
+  rows, export to CSV, copy as JSON.
+- **IntelliSense from your schema.** Completion for tables, the columns of
+  the tables in your statement, and what `alias.` expands to. Hover a table
+  to see its columns. Format Document uses the right formatter for the
+  dialect.
+- **Query history.** Everything you ran, with the connection it ran on.
+  Click to open it again.
+- **Passwords stay out of settings.** They are kept in VS Code's secret
+  storage; the rest of the connection lives in your settings so it syncs.
 
 ## Install
 
-**From the VS Code Marketplace.** Search for `dbw` in the Extensions view, or:
+Search for **dbw** in the Extensions view, or run `ext install sajonaro.dbw`.
 
-```
-ext install sajonaro.dbw
-```
-
-**From a GitHub release.** Download `dbw-<version>.vsix` from the
-[releases page](https://github.com/sajonaro/dbw/releases), then:
+To install a release by hand, download `dbw-<version>.vsix` from the
+[releases page](https://github.com/sajonaro/dbw/releases) and use
+*Extensions view → … → Install from VSIX*, or:
 
 ```sh
 code --install-extension dbw-<version>.vsix
 ```
 
-or *Extensions view → … → Install from VSIX*. This also works for
-code-server and for a VS Code connected to a remote or WSL.
+This also works for code-server and for VS Code connected to WSL or a
+remote machine.
 
-**From git.**
+## Quick start
 
-```sh
-git clone https://github.com/sajonaro/dbw.git && cd dbw
-npm install
-npm run package                        # packages/extension/dbw-<version>.vsix
-code --install-extension packages/extension/dbw-*.vsix
+1. Click the **dbw** icon in the activity bar and choose **Add Connection**.
+2. Pick a database type and fill in the form.
+   - SQLite: the path to the file, or `:memory:`.
+   - PostgreSQL: host, port, database, user, password, SSL on or off.
+   - SQL Server: server, port, database, user, password, encryption.
+3. Expand the connection. Right-click a table for **Select Top Rows**, or
+   choose **New Query** to open an editor bound to it.
+4. Write a statement and press `Ctrl+Enter`.
+
+## Running queries
+
+| Keys           | Does                                                     |
+| -------------- | -------------------------------------------------------- |
+| `Ctrl+Enter`   | Run the statement under the cursor                       |
+| `F5`           | Run the whole editor                                     |
+| `Ctrl+Alt+C`   | Choose which connection this editor uses                 |
+
+A selection always wins: if you have text selected, either key runs just
+that. Multiple statements produce one results tab each. SQL Server batches
+split on `GO`.
+
+In the grid, `Ctrl+C` copies the selected cell or rows. **Export CSV** and
+**Copy as JSON** are in the toolbar above it.
+
+## PRQL on any database
+
+Open a `.prql` file, bind it to a connection, and `Ctrl+Enter` compiles the
+query to that database's SQL dialect and runs it. **Show Compiled SQL** in
+the editor title opens the generated SQL beside your PRQL. Completion knows
+PRQL's keywords and your tables.
+
+```prql
+from orders
+filter status == "open"
+group customer_id (aggregate { total = sum amount })
+sort { -total }
+take 20
 ```
 
-With Docker and no Node at all: `npm run vsix` (or `docker build --target dist
---output out .`) runs the whole gate in a container and leaves the `.vsix`
-in `out/`.
+## Commands
 
-## Use it
+All of these are in the Command Palette under **dbw**, and most are also in
+the sidebar and editor context menus.
 
-1. Open the **dbw** view in the activity bar and **Add Connection**. Pick a
-   driver; the form is whatever that driver asks for. Passwords go to VS
-   Code's secret storage, never to settings.
-2. Expand the connection. Click a table for its first rows, or **New Query**.
-3. In any `.sql` editor the status bar shows which connection it uses. Click
-   it, or press `Ctrl+Alt+C`, to change.
-4. `Ctrl+Enter` runs the statement under the cursor; `F5` runs the whole
-   editor; a selection wins over both. Results open beside the editor, one
-   tab per result set, with a Messages tab. `Ctrl+C` in the grid copies the
-   cell, or the selected rows; **Export CSV** and **Copy as JSON** are above it.
-5. Completion knows the tables of the bound connection, the columns of the
-   tables in the statement, and what `alias.` means. Hover a table for its
-   columns. **Format Document** uses the dialect's formatter.
-6. **Query History** keeps what you ran; click one to open it again.
-7. A `.prql` editor works the same way on any connection: `Ctrl+Enter` compiles
-   the PRQL to the connection's SQL dialect and runs it, **Show Compiled SQL**
-   opens the SQL beside it, and completion knows PRQL's words and your tables.
+- Add, Edit, Remove Connection; Connect; Disconnect; Refresh
+- New Query; Select Top Rows; Copy Name; Insert Name into Editor
+- Run Statement (or Selection); Run All (or Selection); Show Results
+- Use Connection for This Editor; Refresh IntelliSense Schema
+- Show Query History; Clear Query History; Open in New Query
+- Show Compiled SQL (PRQL editors)
 
-## How it is put together
+## Settings
 
-![How dbw is put together](docs/architecture.svg)
+| Setting              | Default | What it controls                                   |
+| -------------------- | ------- | -------------------------------------------------- |
+| `dbw.selectTopLimit` | 100     | Rows that **Select Top Rows** asks for             |
+| `dbw.maxRowsShown`   | 10000   | Rows kept per result set in the grid               |
+| `dbw.history.limit`  | 200     | How many queries to remember                       |
+| `dbw.connections`    | `[]`    | Saved connections (passwords are stored separately) |
+| `dbw.driverModules`  | `[]`    | Extra database drivers to load, as module paths    |
 
-Everything a database or a dialect has to say is said through `@dbw/core`,
-the one seam. On its left, the extension: a composition root that builds
-the shared services and calls each feature; a registry that looks drivers
-and dialects up by id; the results page in a webview on the other side of a
-message. On its right, the plugins that implement the contract, and beyond
-them the databases they reach. Adding a database or a dialect touches
-nothing on the left.
+## Adding more databases
 
-## Add a database
+dbw is built so that a new database is a plugin, not a change to dbw. See
+[CONTRIBUTING.md](CONTRIBUTING.md) for how drivers, dialects and query
+languages are registered, and [ARCHITECTURE.md](ARCHITECTURE.md) for how the
+parts fit together.
 
-A driver is a module whose default export is a `DriverPlugin` from
-`@dbw/core`: a name, a dialect, a JSON Schema for its connection form, and
-`connect`, which returns something that can `query`, list `roots` and
-`children` for the explorer, and list `objects` for completion.
+## Not yet
 
-Three ways to register one:
+Query cancellation, editing rows in the grid, and DDL helpers are not part
+of this release.
 
-- **From settings**, no extension needed: build the module and add its path
-  to `dbw.driverModules`.
-- **From another extension**: `vscode.extensions.getExtension('sajonaro.dbw').exports.registerDriver(plugin)`.
-- **Built in**: add it to the list in `packages/extension/src/extension.ts`.
+## Feedback
 
-A dialect alone (quoting, keywords, formatter, splitter) is registered the
-same way with `registerDialect`; a generic driver can let each connection
-pick a dialect by putting `dialect` in its connection schema. A query
-language that compiles to SQL, as PRQL does, is a `QueryLanguage` registered
-with `registerLanguage`: an id (the VS Code language id), `compile(text,
-dialect)`, and optionally `split`, `format` and keywords.
-
-## Develop
-
-```sh
-npm install
-npm run build        # bundles the extension and the results page
-npm test             # the analyzer, the dialect helpers, serialization, the sqlite driver
-npm run package      # dbw-<version>.vsix
-npm run vsix         # the same, through the Docker gate, into out/
-npm run version      # what every manifest says; `-- 0.2.0` or `-- minor` sets them
-```
-
-Press F5 in VS Code with `packages/extension` open to run it in an
-Extension Development Host. See [ARCHITECTURE.md](ARCHITECTURE.md) for the
-parts in detail and where to add things.
-
-## Release
-
-The `Dockerfile` is the CI: `test` is the gate (types, tests, bundle) and
-`dist` is the `.vsix`, which only exists if the gate passed. Three workflows:
-
-- **CI** runs the gate on every push and pull request and uploads the `.vsix`.
-- **Tag a release** (run it from the Actions tab, give it `0.2.0`, `minor`
-  or `patch`) bumps every manifest, commits, and pushes tag `v<version>`.
-- **Release** runs on that tag: the gate again, a GitHub release with the
-  `.vsix`, and publication to the VS Code Marketplace and Open VSX when the
-  `VSCE_PAT` and `OVSX_PAT` secrets are set. Without them the release still
-  happens on GitHub only.
-
-Publishing needs a publisher named `sajonaro` on the Marketplace (created
-once at marketplace.visualstudio.com/manage) and a personal access token
-with the *Marketplace: Manage* scope stored as the `VSCE_PAT` secret.
+Bugs and requests: [issues](https://github.com/sajonaro/dbw/issues).
