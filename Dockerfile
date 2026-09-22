@@ -1,7 +1,7 @@
 # dbw's CI, as four stages.
 #
 #   docker build --target test .                     the gate: types, tests, bundle, from a clean tree
-#   docker build --target dist --output out .        out/dbw-<version>.vsix, only if the gate passed
+#   docker build --target dist --output out .        out/dbw-workbench-<version>.vsix, only if the gate passed
 #
 # Everything is pinned: the base image by digest, dependencies by the lock
 # file, and dbw itself by DBW_VERSION, which the build checks against the

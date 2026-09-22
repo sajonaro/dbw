@@ -8,9 +8,9 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build -w dbw",
-    "watch": "npm run watch -w dbw",
-    "package": "npm run package -w dbw",
+    "build": "npm run build -w packages/extension",
+    "watch": "npm run watch -w packages/extension",
+    "package": "npm run package -w packages/extension",
     "typecheck": "tsc -p packages/extension --noEmit && tsc -p packages/core --noEmit",
     "test": "vitest run",
     "version": "node scripts/version.mjs",

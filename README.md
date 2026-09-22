@@ -1,10 +1,10 @@
 # dbw extension for Visual Studio Code
 
 [![MIT License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://vsmarketplacebadges.dev/version-short/sajonaro.dbw.svg?color=orange)](https://marketplace.visualstudio.com/items?itemName=sajonaro.dbw)
-[![Installs](https://vsmarketplacebadges.dev/installs-short/sajonaro.dbw.svg?color=orange)](https://marketplace.visualstudio.com/items?itemName=sajonaro.dbw)
-[![Downloads](https://vsmarketplacebadges.dev/downloads-short/sajonaro.dbw.svg?color=orange)](https://marketplace.visualstudio.com/items?itemName=sajonaro.dbw)
-[![Rating](https://vsmarketplacebadges.dev/rating-short/sajonaro.dbw.svg?color=orange)](https://marketplace.visualstudio.com/items?itemName=sajonaro.dbw)
+[![Version](https://vsmarketplacebadges.dev/version-short/sajonaro.dbw-workbench.svg?color=orange)](https://marketplace.visualstudio.com/items?itemName=sajonaro.dbw-workbench)
+[![Installs](https://vsmarketplacebadges.dev/installs-short/sajonaro.dbw-workbench.svg?color=orange)](https://marketplace.visualstudio.com/items?itemName=sajonaro.dbw-workbench)
+[![Downloads](https://vsmarketplacebadges.dev/downloads-short/sajonaro.dbw-workbench.svg?color=orange)](https://marketplace.visualstudio.com/items?itemName=sajonaro.dbw-workbench)
+[![Rating](https://vsmarketplacebadges.dev/rating-short/sajonaro.dbw-workbench.svg?color=orange)](https://marketplace.visualstudio.com/items?itemName=sajonaro.dbw-workbench)
 
 dbw is a database workbench: browse your schema, write queries with
 completion from your real tables, and see the results beside the editor.
@@ -67,8 +67,8 @@ dbw contributes the following to VS Code:
 
 ## Getting Started
 
-Search for **dbw** in the Extensions view, run `ext install sajonaro.dbw`, or
-download `dbw-<version>.vsix` from the [releases page](https://github.com/sajonaro/dbw/releases)
+Search for **dbw** in the Extensions view, run `ext install sajonaro.dbw-workbench`, or
+download `dbw-workbench-<version>.vsix` from the [releases page](https://github.com/sajonaro/dbw/releases)
 and use *Extensions view → … → Install from VSIX*. Then:
 
 

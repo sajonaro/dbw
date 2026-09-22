@@ -2,7 +2,8 @@
 # scripts underneath; the version comes from the extension manifest.
 
 VERSION := $(shell node -p "require('./packages/extension/package.json').version")
-VSIX    := packages/extension/dbw-$(VERSION).vsix
+NAME    := $(shell node -p "require('./packages/extension/package.json').name")
+VSIX    := packages/extension/$(NAME)-$(VERSION).vsix
 DESKTOP := $(shell cmd.exe /c "echo %USERPROFILE%" 2>/dev/null | tr -d '\r' | sed 's#\\#/#g; s#^C:#/mnt/c#')/Desktop
 
 .PHONY: build install stage
@@ -20,7 +21,7 @@ install: $(VSIX)
 ## Copy the .vsix to the Windows Desktop for manual Marketplace upload
 stage: $(VSIX)
 	cp $(VSIX) "$(DESKTOP)/"
-	@echo "Staged $(DESKTOP)/dbw-$(VERSION).vsix"
+	@echo "Staged $(DESKTOP)/$(NAME)-$(VERSION).vsix"
 	@echo "Upload at https://marketplace.visualstudio.com/manage/publishers/sajonaro"
 
 $(VSIX):

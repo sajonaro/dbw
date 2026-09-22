@@ -81,7 +81,7 @@ export class Registry {
     return driver.dialectFor?.(profile.config) ?? driver.dialect;
   }
 
-  /** What other extensions get from `extensions.getExtension('sajonaro.dbw').exports`. */
+  /** What other extensions get from `extensions.getExtension('sajonaro.dbw-workbench').exports`. */
   api(version: string): DbwApi {
     return {
       version,

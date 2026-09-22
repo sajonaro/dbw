@@ -76,7 +76,7 @@ MariaDB one is the shortest complete example.
 
 - **From settings**, no extension needed: build the module and add its path
   to `dbw.driverModules`.
-- **From another extension**: `vscode.extensions.getExtension('sajonaro.dbw').exports.registerDriver(plugin)`.
+- **From another extension**: `vscode.extensions.getExtension('sajonaro.dbw-workbench').exports.registerDriver(plugin)`.
 
 A dialect alone (quoting, keywords, formatter, splitter) is registered the
 same way with `registerDialect`; a generic driver can let each connection
@@ -93,7 +93,7 @@ npm run build        # bundles the extension and the results page
 npm test             # the analyzer, the dialect helpers, serialization, the sqlite driver
                      # DBW_MARIADB=host:port:user:password also runs the MariaDB driver against a server
 npm run check        # activates the bundle in Node with a stubbed vscode: commands, API, deactivation
-npm run package      # dbw-<version>.vsix
+npm run package      # dbw-workbench-<version>.vsix
 npm run vsix         # the same, through the Docker gate, into out/
 npm run version      # what every manifest says; `-- 0.2.0` or `-- minor` sets them
 ```
