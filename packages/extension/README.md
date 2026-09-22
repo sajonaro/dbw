@@ -36,35 +36,45 @@ lets you write [PRQL](https://prql-lang.org/) against any of them.
    choose **New Query** to open an editor bound to it.
 4. Write a statement and press `Ctrl+Enter`.
 
-## Running queries
+## SQL and PRQL in one minute
 
-| Keys           | Does                                                     |
-| -------------- | -------------------------------------------------------- |
-| `Ctrl+Enter`   | Run the statement under the cursor                       |
-| `F5`           | Run the whole editor                                     |
-| `Ctrl+Alt+C`   | Choose which connection this editor uses                 |
+**Open a file.** `.sql` or `.prql`. The status bar shows the connection it
+runs on; click it or press `Ctrl+Alt+C` to change.
 
-A selection always wins: if you have text selected, either key runs just
-that. Multiple statements produce one results tab each. SQL Server batches
-split on `GO`.
+**Run it.**
 
-In the grid, `Ctrl+C` copies the selected cell or rows. **Export CSV** and
-**Copy as JSON** are in the toolbar above it.
+| Keys         | SQL                              | PRQL                          |
+| ------------ | -------------------------------- | ----------------------------- |
+| `Ctrl+Enter` | Statement under the cursor       | The whole file                |
+| `F5`         | Whole file, one tab per statement | The whole file               |
 
-## PRQL on any database
+A selection always wins over both. SQL Server batches split on `GO`.
 
-Open a `.prql` file, bind it to a connection, and `Ctrl+Enter` compiles the
-query to that database's SQL dialect and runs it. **Show Compiled SQL** in
-the editor title opens the generated SQL beside your PRQL. Completion knows
-PRQL's keywords and your tables.
+**Read the results.** One tab per result set, plus Messages. `Ctrl+C` copies
+the selected cells or rows. **Export CSV** and **Copy as JSON** are in the
+toolbar.
+
+**SQL** is the dialect of the connection, sent as is. Completion knows your
+tables, their columns, and what `alias.` means; hover a table for its
+columns; Format Document uses the dialect's formatter.
+
+**PRQL** is compiled to the connection's SQL before it runs. Each line
+transforms the result of the line above. **Show Compiled SQL** in the editor
+title shows what was sent.
 
 ```prql
-from orders
-filter status == "open"
-group customer_id (aggregate { total = sum amount })
-sort { -total }
-take 20
+from o=orders
+join c=customers (o.customer_id == c.customer_id)
+filter o.ship_country == "Germany"
+group {c.company_name} (aggregate {orders = count o.order_id})
+sort {-orders}
+take 10
 ```
+
+`from` a table, `join` with an explicit condition (alias both sides), `filter`
+rows, `derive` a column, `group` then `aggregate`, `sort` with `-` for
+descending, `take` a count or a range like `10..20`, `select` the output
+columns. Strings use double quotes.
 
 ## Commands
 
