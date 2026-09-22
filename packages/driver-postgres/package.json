@@ -1,6 +1,6 @@
 {
   "name": "@dbw/driver-postgres",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "type": "module",
   "description": "dbw driver: PostgreSQL, through pg.",
   "main": "./src/index.ts",

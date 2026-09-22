@@ -1,6 +1,6 @@
 {
   "name": "@dbw/driver-mssql",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "type": "module",
   "description": "dbw driver: Microsoft SQL Server, through mssql (tedious).",
   "main": "./src/index.ts",

@@ -1,6 +1,6 @@
 {
   "name": "@dbw/driver-sqlite",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "type": "module",
   "description": "dbw driver: SQLite, through Node's built-in node:sqlite.",
   "main": "./src/index.ts",

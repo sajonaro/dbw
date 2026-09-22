@@ -1,6 +1,6 @@
 {
   "name": "@dbw/driver-mariadb",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "type": "module",
   "description": "dbw driver: MariaDB and MySQL, through the mariadb connector.",
   "main": "./src/index.ts",

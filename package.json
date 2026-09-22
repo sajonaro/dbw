@@ -1,7 +1,7 @@
 {
   "name": "dbw-workspace",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.1",
   "type": "module",
   "description": "dbw: a database workbench for VS Code, one plugin per dialect and driver.",
   "workspaces": [

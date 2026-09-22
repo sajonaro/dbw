@@ -1,6 +1,6 @@
 {
   "name": "@dbw/language-prql",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "type": "module",
   "description": "dbw query language: PRQL, compiled to the connection's SQL dialect by prqlc.",
   "main": "./src/index.ts",

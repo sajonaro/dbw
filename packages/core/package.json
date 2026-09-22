@@ -1,6 +1,6 @@
 {
   "name": "@dbw/core",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "type": "module",
   "description": "The contract between dbw and a driver or dialect plugin.",
   "main": "./src/index.ts",
